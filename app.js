@@ -1,7 +1,7 @@
 let myLibrary = []
 
 
-function Book(author,title,pages,feedback){
+function Book(author, title, pages, feedback) {
     this.author = author
     this.title = title
     this.pages = pages
@@ -10,6 +10,8 @@ function Book(author,title,pages,feedback){
 
 Book.prototype.status = ''
 
+
+//checks whether there is local storage available
 function storageAvailable(type) {
     var storage;
     try {
@@ -19,7 +21,7 @@ function storageAvailable(type) {
         storage.removeItem(x);
         return true;
     }
-    catch(e) {
+    catch (e) {
         return e instanceof DOMException && (
             // everything except Firefox
             e.code === 22 ||
@@ -37,23 +39,23 @@ function storageAvailable(type) {
 
 
 
-function showBooks(){
+function showBooks() {
 
     let testLibrary = localStorage.getItem('myLibrary')
-    
-    
-    if(testLibrary === null){
+
+
+    if (testLibrary === null) {
         return;
-    } 
+    }
 
     let myLibrary = JSON.parse(testLibrary)
 
-    for(let i = 0; i < myLibrary.length; i++){
+    for (let i = 0; i < myLibrary.length; i++) {
 
         let card = document.createElement('div')
         card.id = `book-${i}`
         card.classList.add('card')
-    
+
         card.innerHTML = `
         <h2>Author <i class="fas fa-user-tie"></i> : <span id="author"></span></h2>
         <h2>Title <i class="fas fa-book-reader"></i> : <span id="title"></span></h2>
@@ -63,37 +65,37 @@ function showBooks(){
         <div id='read-img'><h2>Read This? <h2/><button id='corr'><i class="fas fa-check-circle fa-lg"></i></button><i id='wrong' class="fas fa-times-circle fa-lg"></i></div>
         <button id='delete-card' class='del-card'>Delete Book</button>
         `
-        
+
         let author = card.querySelector('#author')
         let title = card.querySelector('#title')
         let pages = card.querySelector('#pages')
         let feedback = card.querySelector('#feedback')
         let readTag = card.querySelector('#readtag')
-        
-        for(let j = 0; j < Object.keys(myLibrary[i]).length; j++){
-    
+
+        for (let j = 0; j < Object.keys(myLibrary[i]).length; j++) {
+
             let propName = Object.keys(myLibrary[i])[j]
-        
-            if(propName == 'author'){
+
+            if (propName == 'author') {
                 author.textContent = myLibrary[i][propName]
-                
-                
-            }else if(propName == 'title'){
+
+
+            } else if (propName == 'title') {
                 title.textContent = myLibrary[i][propName]
-                
-            } else if(propName == 'pages'){
+
+            } else if (propName == 'pages') {
                 pages.textContent = myLibrary[i][propName]
-            } else if(propName == 'feedback'){
+            } else if (propName == 'feedback') {
                 feedback.textContent = myLibrary[i][propName]
             }
-    
-    
+
+
         }
 
-        if(readTag.childNodes[3].textContent == ''){
+        if (readTag.childNodes[3].textContent == '') {
             readTag.style.display = 'none'
-        } 
-    
+        }
+
         container.appendChild(card)
     }
 
@@ -109,42 +111,42 @@ function showBooks(){
     removeBtn()
 }
 
-function removeBtn(){
-    for(let i = 0; i < deleteCard.length; i++){
-        deleteCard[i].addEventListener('click',function(e){
-            if(e.target.parentElement.id == `book-${i}`){
+function removeBtn() {
+    for (let i = 0; i < deleteCard.length; i++) {
+        deleteCard[i].addEventListener('click', function (e) {
+            if (e.target.parentElement.id == `book-${i}`) {
                 e.target.parentElement.remove()
                 let current = localStorage.getItem('myLibrary')
                 let myLibrary = JSON.parse(current)
-                myLibrary.splice(i,1)
-                localStorage.setItem('myLibrary', JSON.stringify(myLibrary)) 
+                myLibrary.splice(i, 1)
+                localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
             }
         })
     }
 }
 
-function readThis(){
-    for(let i=0; i<readBook.length; i++){
-        readBook[i].addEventListener('click',function(e){
+function readThis() {
+    for (let i = 0; i < readBook.length; i++) {
+        readBook[i].addEventListener('click', function (e) {
             let readFont = e.target.closest('#read-img').previousElementSibling
             let span = readFont.querySelector('#status')
             span.textContent = 'I have read This'
             readFont.style.display = 'block'
             myLibrary[i].status = 'read'
         })
-      }
+    }
 }
 
-function notReadThis(){
-    for(let i=0; i<notReadBook.length; i++){
-        notReadBook[i].addEventListener('click',function(e){
+function notReadThis() {
+    for (let i = 0; i < notReadBook.length; i++) {
+        notReadBook[i].addEventListener('click', function (e) {
             let notreadFont = e.target.closest('#read-img').previousElementSibling
             let span = notreadFont.querySelector('#status')
             span.textContent = 'Not Seen This'
             notreadFont.style.display = 'block'
             myLibrary[i].status = 'not read'
         })
-      }
+    }
 }
 
 
@@ -174,32 +176,32 @@ let formFeedback = document.querySelector('#form-feedback')
 
 showBooks()
 
-addBook.addEventListener('click',function(){
-    
+addBook.addEventListener('click', function () {
+
     let author = formAuthor.value
     let title = formTitle.value
     let pages = formPages.value
     let feedback = formFeedback.value
-    let newBook = new Book(author,title,pages,feedback)
+    let newBook = new Book(author, title, pages, feedback)
 
 
-    if(localStorage.getItem('myLibrary') != null){
+    if (localStorage.getItem('myLibrary') != null) {
         let current = localStorage.getItem('myLibrary')
         myLibrary = JSON.parse(current)
         myLibrary.push(newBook)
-    }else {
+    } else {
         myLibrary.push(newBook)
     }
 
     if (storageAvailable('localStorage')) {
-        
-        localStorage.setItem('myLibrary',JSON.stringify(myLibrary))
-       
-      }else {
-        alert('There is no storage space for you')
-      }
 
-    while(container.firstChild){
+        localStorage.setItem('myLibrary', JSON.stringify(myLibrary))
+
+    } else {
+        alert('There is no storage space for you')
+    }
+
+    while (container.firstChild) {
         container.removeChild(container.firstChild)
     }
     showBooks()
@@ -207,13 +209,13 @@ addBook.addEventListener('click',function(){
     container.classList.remove('blur')
 })
 
-cancel.addEventListener('click',function(){
+cancel.addEventListener('click', function () {
     form.style.display = 'none'
     container.classList.remove('blur')
 
 })
 
-addNewBook.addEventListener('click',function(){
+addNewBook.addEventListener('click', function () {
     container.classList.add('blur')
     form.style.display = 'block'
 })
