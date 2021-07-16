@@ -1,13 +1,33 @@
+.button.button-primary,
+button.button-primary,
+input[type='submit'].button-primary,
+input[type='reset'].button-primary,
+input[type='button'].button-primary {
+  color: #fff;
+  background-color: rgba(0, 128, 0, 0.9);
+  border-color: rgba(0, 128, 0, 0.9);
+}
+
 .header {
   text-align: center;
 }
 
-error-alert {
-  background: red;
+.error,
+.success {
   padding: 5px;
+  margin: 5px;
+  color: white;
+  border-radius: 5px;
 }
 
-success-alert {
+.success {
   background: green;
-  padding: 5px;
+}
+
+.error {
+  background: red;
+}
+
+#book-list {
+  cursor: pointer;
 }
